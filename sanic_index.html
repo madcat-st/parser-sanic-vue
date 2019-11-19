@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <title>Parse News</title>
+</head>
+<body>
+  <div id="app">
+    <h1>News Parser</h1>
+
+    URL: <input type="text" v-model:value="info.url">
+    <button @click="post_to_parse">Parse!</button><br>
+
+    <p>Parser configuration:</p>
+    <textarea rows="10" cols="100" v-model="info.param"></textarea>
+
+    <p>Output:</p>
+    <textarea rows="18" cols="100" readonly>{{out.parsed_output}}</textarea>
+
+    <p>Raw Data:</p>
+    <textarea rows="18" cols="100" readonly>{{out}}</textarea>
+
+  </div>
+
+  <script type="text/javascript">
+    window.App = new Vue ({
+      el: '#app',
+      data: {
+        info: { url: null, param:null },
+        out: {parsed_output: null}
+      },
+      methods: {
+        post_to_parse: function () {
+          this.out.parsed_output = "Loading......."
+          axios
+            .post('/parse', JSON.stringify(this.info))
+            .then(response => (this.out = response.data))
+        },
+      },
+      mounted () {
+        axios
+          .get('/default-config.json')
+          .then(response => (this.info = response.data))
+      }
+    })
+  </script>
+
+</body>
+</html>
