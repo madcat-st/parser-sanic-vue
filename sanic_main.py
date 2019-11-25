@@ -30,7 +30,7 @@ app.static('/', 'sanic_index.html', content_type='text/html; charset=utf-8')
 
 @app.route('/default-config.json')
 async def def_data(request):
-    return json({'url': DEFAULT_URL,'param': DEFAULT_PARAM})
+    return json({'url': DEFAULT_URL, 'param': DEFAULT_PARAM})
 
 @app.route('/parse', methods=['POST',])
 async def parse(request):
